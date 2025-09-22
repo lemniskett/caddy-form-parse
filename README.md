@@ -1,66 +1,25 @@
-[![Go](https://github.com/abiosoft/caddy-json-parse/workflows/Go/badge.svg)](https://github.com/abiosoft/caddy-json-parse/actions)
-
-# caddy-json-parse
-Caddy v2 module for parsing json request body.
+# caddy-form-parse
+Caddy v2 module for parsing form data in request body, forked from [caddy-json-parse](https://github.com/abiosoft/caddy-json-parse)
 
 ## Installation
 
 ```
 xcaddy build v2.0.0 \
-    --with github.com/abiosoft/caddy-json-parse
+    --with github.com/lemniskett/caddy-form-parse
 ```
-
 
 ## Usage
 
-`json_parse` parses the request body as json for reference as [placeholders](https://caddyserver.com/docs/caddyfile/concepts#placeholders).
+`form_parse` parses the request body as form data for reference as [placeholders](https://caddyserver.com/docs/caddyfile/concepts#placeholders).
 
 ### Caddyfile
 
-Simply use the directive anywhere in a route. If set, `strict` responds with bad request if the request body is an invalid json.
+Simply use the directive anywhere in a route. You can define formvalue multiple times to parse multiple keys.
 ```
-json_parse [<strict>]
-```
-
-And reference variables via `{json.*}` placeholders. Where `*` can get as deep as possible. e.g. `{json.items.0.label}`
-
-
-#### Example
-
-Run a [command](https://github.com/abiosoft/caddy-exec) only if the github webhook is a push on master branch.
-```
-@webhook {
-    expression {json.ref}.endsWith('/master')
-}
-route {
-    json_parse # enable json parser
-    exec @webhook git pull origin master
-}
+form_parse <formvalue...>
 ```
 
-### JSON
-
-`json_parse` can be part of any route as an handler
-
-```jsonc
-{
-  ...
-  "routes": [
-    {
-      "handle": [
-        {
-          "handler": "json_parse",
-
-          // if set to true, returns bad request for invalid json
-          "strict": false 
-        },
-        ...
-      ]
-    },
-  ...
-  ]
-}
-```
+And reference variables via `{form.*}` placeholders.
 
 ## License
 

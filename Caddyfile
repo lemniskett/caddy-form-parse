@@ -1,0 +1,10 @@
+{
+    debug
+}
+
+http://localhost:7000 {
+    route /form {
+        form_parse name
+        respond "Value of 'name' field is: {form.name}" 200
+    }
+}
